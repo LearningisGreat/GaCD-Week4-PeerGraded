@@ -1,0 +1,89 @@
+---
+title: "Codebook"
+author: "LearningIsGreat"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    keep_md: yes
+---
+
+## Project Description
+This project is the peer-evaluated final exam in the course Getting and Cleaning data on Coursera. The project is meant to test the students ability to get and clean data and document the process.
+
+The project data is accelerometers from the Samsung Galaxy S Smartphone.
+The objective for the project is to merge and clean these datasets and produce a tidy dataset that can be used for further analysis,
+Thanks to [JorisSchut](https://gist.github.com/JorisSchut) for the Codebook layout from where the layout for this Codebook format is forked.
+
+## Study design and data processing
+
+These are the steps that needs to be done in order to pass the assignment, from the course webpage:  
+1. Merge training and test set  
+2. Extract only the relevant columns that include mean or standard deviation   
+3. Get the activities in the dataset named  
+4. Labels need to be added, Is this action done standing, sitting or laying down etc...  
+5. Produce a tidy dataset from this by taking the mean for each subject and activity  
+
+
+### Collection of the raw data
+
+The link to the data is provided on the coursera course website getting and cleaning data, week 4, peer-graded assignment. The raw data comes in several zipped txt files.   
+
+### Notes on the original (raw) data
+
+The data is split into several separate text files, those of interest, that will be used in this assignment are the following:  
+1.  Test set, `UCI HAR Dataset/test/X_test.txt`,   
+2.  Train set, `UCI HAR Dataset/train/X_train.txt`,   
+3.  List of all features, `UCI HAR Dataset/features.txt`,  
+4.  File for linking the class labels with their activity name, `UCI HAR Dataset/activity_labels.txt`,  
+5.  Training labels, `UCI HAR Dataset/train/y_train.txt`  
+6.  Test labels, `UCI HAR Dataset/test/y_test.txt`   
+7.  Subjects test, `UCI HAR Dataset/test/subject_test.txt`  
+8.  subjects train, `UCI HAR Dataset/train/subject_train.txt`  
+  
+
+## Creating the tidy datafile
+
+### Guide to create the tidy data file
+
+1. **Merge training and test set**  
+First the file is downloaded from the provided [URL](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) and gathered into a list by a for loop. Then the list elements for the test and train sets are binded together. The subjects data is binded together at this point also.
+
+2. **Extract the measurements on mean and standard deviation**   
+This step is done with the help of the features dataset. The features dataset contains the descriptions of the columns containing the information needed to know if the column is a mean or standard deviation. Once the names of the merged train and test dataset have proper column names, the correct columns are filtered out with grepl. This step will shrink the dataset from 562 columns to 82 columns. 
+
+3. **Get the activities in the dataset named**   
+This is already done by adding the labels from the training and test datasets to the shrinked dataset containing the measurements on standard deviation and mean.
+
+4. **Add labels**   
+Labels are found in separate files in the zip collection. These can be merged to the dataset thanks to the label-id´s present in the merged train and test sets.
+
+5. **Produce a tidy dataset**  
+Take the mean on the dataset grouped by the activity label and Subject. The resulting dataset is saved as a text file
+
+
+
+### Cleaning of the data  
+Short explanation of the script, [link to the readme document that describes the code in greater detail]()  
+1. Data is downloaded  
+2. Training and test set are merged, `full_dataset`  
+3. test and train subject data is merged, `full_subjects`  
+4. Column headers are added to the merged `full_dataset`  
+5. Only measurements on mean and sd are kept in new dataset, `sd_and_mean`  
+6. labels are joined into sd_and_mean, `sd_and_mean_activites_named`  
+7. Final dataset is produced `aggregate` function, `tidy_data`  
+
+## Description of the variables in the tiny_data.txt file
+```{r}
+tiny_data <- read.table("tiny_data")
+```
+
+General description of the file:  
+ - **Dimensions of the dataset**, `r dim(tiny_data)`  
+ - **Variables present in the dataset**:  
+ `r names(tiny_data)`  
+ - **Structure of the data**, each row describes one subject and associated activity. Columns 3-81 are the averages of different variables   
+```{r}
+str(tiny_data)
+```
+ 
+ 
