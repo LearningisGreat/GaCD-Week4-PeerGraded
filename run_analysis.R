@@ -67,4 +67,4 @@ tidy_data <- aggregate(sd_and_mean_activities_named[grepl("-std()|-mean()",names
    ),
    mean)
 
-write.table(tidy_data, "tiny_data")
+write.table(tidy_data, "tiny_data", row.names = FALSE)
